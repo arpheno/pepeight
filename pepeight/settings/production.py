@@ -16,10 +16,6 @@ CACHES = {
     }
 }
 
-
-
-
-
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS = 30
 CACHE_MIDDLEWARE_KEY_PREFIX = ""
@@ -54,5 +50,3 @@ DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.redirects.RedirectsPanel',
     'django_statsd.panel.StatsdPanel',
 ]
-
-
