@@ -1,0 +1,16 @@
+deployment:
+  master:
+    branch: master
+    commands:
+      - cd backendfail && bower install && cd ..
+      - docker build -t arpheno/pepeight:master .
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push arpheno/pepeight
+  development:
+    branch: development
+    commands:
+      - cd backendfail && bower install && cd ..
+      - docker build -t arpheno/pepeight:development .
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push arpheno/pepeight
+

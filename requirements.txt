@@ -1,0 +1,7 @@
+Django==1.8.5
+argparse==1.2.1
+django-debug-toolbar
+autopep8
+pytest-bdd
+pytest-django
+django-statsd-mozilla
