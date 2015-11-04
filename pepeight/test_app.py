@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 @pytest.mark.django_db
 def test_can_get(client):
     resp = client.get(reverse_lazy('home'))
-    assert "pep8" in resp.content
+    assert "PEP8" in resp.content
 
 @pytest.mark.parametrize("mode", ["0",'1','2'])
 @pytest.mark.django_db
