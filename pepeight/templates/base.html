@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'reset.css' %}">
 <head>
     <meta charset="UTF-8">
-    <title>backend.fail</title>
+    <title>Auto PEP8 online</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
     <style type="text/css">
         * {
@@ -12,7 +12,7 @@
         }
 
         paper-toolbar {
-            background-color: #0b8043 !important;
+            background-color: #001b80 !important;
         }
 
         [hidden][style="display: block;"] {
@@ -32,13 +32,17 @@
 
         h1, p {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         ul {
             list-style: circle;
             display: flex;
             flex-wrap: wrap;;
+        }
+
+        select {
+            margin-left: 15px;
         }
 
         ul > a {
@@ -68,7 +72,7 @@
             top: 5px;
             border: none;
             left: 0;
-            right:0;;
+            right: 0;;
         }
 
         #editor * {
@@ -103,20 +107,38 @@
     <paper-header-panel drawer>
         <paper-toolbar>
             <a href="/" style="text-decoration: none;">
-                <div style="color:white;text-underline: none">pep8.xyz</div>
+                <div style="color:white;text-underline: none">
+                <h1> Auto PEP8 online</h1>
+                    </div>
             </a>
         </paper-toolbar>
-        <nav id="explorer">
-            <h1> Settings</h1>
+        <nav id="explorer" style="text-align: center;padding-top:20px;">
+            <span>
+            <label for="aggressiveness" style="position:relative; font-weight:200;">Aggressiveness</label>
+            <select id="aggressiveness">
+                <option value="0" selected="selected">Default</option>
+                <option value="1">Aggressive</option>
+                <option value="2">Crazy</option>
+            </select>
+                </span>
+            <paper-button raised name="submit-file" onclick="update_file();" style="font-weight:bold;margin-top:10px;">Apply PEP8
+            </paper-button>
+            <p>One of the most famous Python Enhancement Proposals(PEP) is
+                the <a href="https://www.python.org/dev/peps/pep-0008/">eighth</a>.
+                is a style guide for making python code more readable.</p>
+
+            <p>When trying to share code with others, it is often advisable
+                to make it PEP8 compliant, that is, enforce all the style guidelines
+                on the code.</p>
+
+            <p> This tool does it for you automatically. Just paste the code and hit <span style="font-weight:500">Apply PEP8</span>
+            </p>
+
         </nav>
     </paper-header-panel>
     <paper-header-panel main>
         <paper-toolbar>
             <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-            <a>
-                <paper-button name="submit-file" onclick="update_file();" style="font-weight:bold;color:white">Run
-                </paper-button>
-            </a>
         </paper-toolbar>
         <main style="display:flex;justify-content: center;align-items: center;align-content: center;
         position: absolute;left:0;right: 0;top:0;bottom:0;">
@@ -133,7 +155,9 @@
                     var editor = ace.edit("editor");
                     code = editor.getValue();
                     var csrf = $("{% csrf_token %}").attr("value"); // This is needed because of django
-                    $.post("", {code: code, csrfmiddlewaretoken: csrf},function(data){
+                    var e = document.getElementById("aggressiveness");
+                    var mode = e.options[e.selectedIndex].value;
+                    $.post("", {mode: mode, code: code, csrfmiddlewaretoken: csrf}, function (data) {
                         editor.setValue(data, -1); // Reset the Cursor
                     });
                 }
@@ -141,6 +165,7 @@
                     var editor = ace.edit("editor");
                     editor.setTheme("ace/theme/chrome");
                     editor.getSession().setMode("ace/mode/python");
+                    editor.setValue("import math, sys;\r\n\r\ndef example1():\r\n    ####This is a long comment. This should be wrapped to fit within 72 characters.\r\n    some_tuple=(   1,2, 3,\'a\'  );\r\n    some_variable={\'long\':\'Long code lines should be wrapped within 79 characters.\',\r\n    \'other\':[math.pi, 100,200,300,9876543210,\'This is a long string that goes on\'],\r\n    \'more\':{\'inner\':\'This whole logical line should be wrapped.\',some_tuple:[1,\r\n    20,300,40000,500000000,60000000000000000]}}\r\n    return (some_tuple, some_variable)\r\ndef example2(): return {\'has_key() is deprecated\':True}.has_key({\'f\':2}.has_key(\'\'));\r\nclass Example3(   object ):\r\n    def __init__    ( self, bar ):\r\n     #Comments should have a space after the hash.\r\n     if bar : bar+=1;  bar=bar* bar   ; return bar\r\n     else:\r\n                    some_string = \"\"\"\r\n                       Indentation in multiline strings should not be touched.\r\nOnly actual code should be reindented.\r\n\"\"\"\r\n                    return (sys.path, some_string)",-1);
                 });
 
             </script>

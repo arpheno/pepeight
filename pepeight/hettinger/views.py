@@ -6,6 +6,7 @@ from django.views.generic import FormView
 
 class CodeForm(Form):
     code = CharField()
+    mode = CharField()
 
 
 class Pep8View(FormView):
@@ -13,5 +14,6 @@ class Pep8View(FormView):
     form_class = CodeForm
 
     def form_valid(self, form):
-        clean_code = autopep8.fix_code(form.cleaned_data["code"])
+        mode = int(form.cleaned_data["mode"])
+        clean_code = autopep8.fix_code(form.cleaned_data["code"],options={"aggressive":mode})
         return HttpResponse(clean_code)
